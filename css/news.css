@@ -1,3 +1,7 @@
+.widget_standout_news_widget {
+  list-style: none;
+}
+
 .standout-news-widget {
   background: #fff;
   width: 90%;
@@ -6,6 +10,7 @@
 
 .standout-news-widget h2 {
   padding: 20px;
+  text-align: center;
 }
 
 .standout-news-widget:after,
@@ -64,11 +69,11 @@
   -moz-transition: all 1s ease-out;
   -o-transition: all 1s ease-out;
   transition: all 1s ease-out;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.4);
 }
 
 .news-info:hover .news-color-overlay {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .news-info:hover .news-image {
