@@ -36,6 +36,7 @@ class StandoutNews {
 
         } catch (Exception $ex) {
             $news = null;
+            return $news;
         }
         return $news->articles;
     }
