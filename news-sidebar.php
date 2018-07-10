@@ -8,7 +8,7 @@ Author URI: https://standout.se
 */
 
 defined('ABSPATH') or die('No script kiddies please!');
-require_once('standoutnews.php');
+require_once('StandoutNews.php');
 
 class Standout_News_Widget extends WP_Widget {
 
@@ -30,6 +30,7 @@ class Standout_News_Widget extends WP_Widget {
     {
         $defaults = array(
             'title'    => '',
+            'number_of_news' => ''
         );
 
         // Parse current settings with defaults
@@ -39,6 +40,10 @@ class Standout_News_Widget extends WP_Widget {
             <p>
                 <label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Widget Title', 'text_domain' ); ?></label>
                 <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+            </p>
+            <p>
+                <label for="<?php echo esc_attr( $this->get_field_id( 'number_of_news' ) ); ?>"><?php _e( 'Number of news', 'text_domain' ); ?></label>
+                <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'number_of_news' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'number_of_news' ) ); ?>" type="number" value="<?php echo esc_attr( $number_of_news ); ?>" />
             </p>
         <?php
     }
@@ -52,6 +57,7 @@ class Standout_News_Widget extends WP_Widget {
     {
         $instance = $old_instance;
         $instance['title']    = isset($new_instance['title']) ? wp_strip_all_tags($new_instance['title']) : '';
+        $instance['number_of_news']    = isset($new_instance['number_of_news']) ? wp_strip_all_tags($new_instance['number_of_news']) : '';
         return $instance;
     }
 
@@ -61,22 +67,24 @@ class Standout_News_Widget extends WP_Widget {
     */
     public function widget($args, $instance)
     {
-        extract($args );
+        extract($args);
 
         // Check the widget options
         $title = isset( $instance['title'] ) ? apply_filters( 'widget_title', $instance['title'] ) : '';
+        $number_of_news = isset( $instance['number_of_news'] ) ? apply_filters( 'widget_number_of_news', $instance['number_of_news'] ) : '';
 
-        // WordPress core before_widget hook (always include )
+        // WordPress core before_widget hook (always include)
         echo $before_widget;
 
         // Display the widget
-        echo '<div class="widget-text wp_widget_plugin_box">';
+        echo '<div class="widget-text wp_widget_plugin_box standout-news-widget">';
 
         // Display widget title if defined
         if ($title) :
             echo $before_title . $title . $after_title;
         endif;
-        $news = new StandoutNews();
+
+        echo do_shortcode('[standout_display_news]');
 
         echo '</div>';
         echo $after_widget;

@@ -3,7 +3,6 @@ defined('ABSPATH') or die('No script kiddies please!');
 require_once('includes/setup.php');
 
 class StandoutNews {
-    private $id;
     private $source;
     private $title;
     private $author;
@@ -14,7 +13,7 @@ class StandoutNews {
 
     function __construct()
     {
-      return $this->init();
+        return $this->init();
     }
 
     /**
@@ -22,7 +21,7 @@ class StandoutNews {
     */
     public function init()
     {
-      $this->standout_news_content();
+        add_shortcode('standout_display_news', array($this, 'display_news'));
     }
 
     /**
@@ -37,8 +36,9 @@ class StandoutNews {
 
         } catch (Exception $ex) {
             $news = null;
+            return $news;
         }
-        return $news;
+        return $news->articles;
     }
 
     /**
@@ -48,19 +48,19 @@ class StandoutNews {
     */
     private function get_source($news)
     {
-      $output = array();
+        $output = array();
 
-      if(!empty($news->source)) :
-        $source = get_object_vars($news->source);
-        $output = array(
-            'id'       =>  'Id: '  . $source["id"],
-            'source'   =>  'Source: '  . $source["name"]
-            );
-      else :
-        $output = array('status' => 'Not available');
-      endif;
+        if(!empty($news->source)) :
+            $source = get_object_vars($news->source);
+            $output = array(
+                'id'       =>  'Id: '  . $source["id"],
+                'source'   =>  $source["name"]
+                );
+            else :
+            $output = array('status' => 'Not available');
+        endif;
 
-      return $output;
+        return $output;
     }
 
     /**
@@ -69,13 +69,13 @@ class StandoutNews {
     */
     private function standout_set_news_values($news)
     {
-        $this->source = $this->get_source($news);
-        $this->title = $news->title;
-        $this->author = $news->author;
-        $this->description = $news->description;
-        $this->url= $news->url;
-        $this->urlToImage= $news->urlToImage;
-        $this->publishedAt = $news->publishedAt;
+        $this->source      =   $this->get_source($news);
+        $this->title       =   $news->title;
+        $this->author      =   $news->author;
+        $this->description =   $news->description;
+        $this->url         =   $news->url;
+        $this->urlToImage  =   $news->urlToImage;
+        $this->publishedAt =   $news->publishedAt;
     }
 
     /**
@@ -84,23 +84,32 @@ class StandoutNews {
     */
     public function standout_news_content()
     {
-        $json_response = $this->standout_fetch_data()->articles;
+        $json_response = $this->standout_fetch_data();
         $output[] = '';
         if ($json_response == null) :
-          $output = "<h1>Sorry, I couldn't find the api</h1>";
+            $output = "<h1>Sorry, I couldn't find the api</h1>";
         else :
-          foreach ($json_response as $news) :
-            $this->standout_set_news_values($news);
-            $output[] = array(
-                'source'       =>  $this->get_source($news),
-                'title'        =>  $news->title,
-                'author'       =>  $news->author,
-                'url'          =>  $news->url,
-                'urlToImage'   =>  $news->urlToImage,
-                'publishedAt'  =>  $news->publishedAt
-            );
-          endforeach;
+            foreach ($json_response as $news) :
+                $this->standout_set_news_values($news);
+                $output[] = array(
+                    'source'       =>  $this->get_source($news),
+                    'title'        =>  $news->title,
+                    'description'  =>  $news->description,
+                    'author'       =>  $news->author,
+                    'url'          =>  $news->url,
+                    'urlToImage'   =>  $news->urlToImage,
+                    'publishedAt'  =>  $news->publishedAt
+                );
+            endforeach;
         endif;
+
         return $output;
     }
+
+    public function display_news()
+    {
+        display_template('show-news.php');
+    }
 }
+
+new StandoutNews();
