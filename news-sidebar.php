@@ -14,7 +14,7 @@ class Standout_News_Widget extends WP_Widget {
 
     public function __construct() {
             parent::__construct(
-            'my_custom_widget',
+            'standout_news_widget',
             __( 'Standout News Widget', 'text_domain' ),
             array(
                 'customize_selective_refresh' => true,
@@ -28,9 +28,102 @@ class Standout_News_Widget extends WP_Widget {
     */
     public function form($instance)
     {
+
+        $names = array(
+                'Select a country',
+                'Great Britain',
+                'United Arab Emirates',
+                'Argentina',
+                'Austria',
+                'Australia',
+                'Belgium',
+                'Bulgaria',
+                'Brazil',
+                'Canada',
+                'Switzerland',
+                'China',
+                'Colombia',
+                'Cuba',
+                'Czech Republic',
+                'Germany',
+                'Egypt',
+                'France',
+                'Greece',
+                'Hong Kong',
+                'Hungary',
+                'Indonesia',
+                'Ireland',
+                'Israel',
+                'India',
+                'Italy',
+                'Japan',
+                'South Korea',
+                'Lithuania',
+                'Latvia',
+                'Morocco',
+                'Mexico',
+                'Malaysia',
+                'Nigeria',
+                'Norway',
+                'Russia',
+                'Sweden',
+                'United States'
+            );
+
         $defaults = array(
-            'title'    => '',
-            'number_of_news' => ''
+            'title'          => '',
+            'number_of_news' => '',
+            'category' => $categories =
+                            array(
+                                'Entertainment',
+                                'General',
+                                'Health',
+                                'Science',
+                                'Sports',
+                                'Technology'
+                            ),
+            'country' => $countries =
+                            array(
+                                '',
+                                'gb',
+                                'ae',
+                                'ar',
+                                'at',
+                                'au',
+                                'be',
+                                'bg',
+                                'br',
+                                'ca',
+                                'ch',
+                                'cn',
+                                'co',
+                                'cu',
+                                'cz',
+                                'de',
+                                'eg',
+                                'fr',
+                                'gr',
+                                'hk',
+                                'hu',
+                                'id',
+                                'ie',
+                                'il',
+                                'in',
+                                'it',
+                                'jp',
+                                'kr',
+                                'lt',
+                                'lv',
+                                'ma',
+                                'mx',
+                                'my',
+                                'ng',
+                                'no',
+                                'ru',
+                                'se',
+                                'sg',
+                                'us'
+                            )
         );
 
         // Parse current settings with defaults
@@ -38,12 +131,56 @@ class Standout_News_Widget extends WP_Widget {
 
         <?php // Widget Title ?>
             <p>
-                <label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Widget Title', 'text_domain' ); ?></label>
-                <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+                <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Widget Title', 'text_domain'); ?></label>
+                <input class="widefat" id="<?php echo esc_attr( $this->get_field_id('title')); ?>" name="<?php echo esc_attr($this->get_field_name('title')); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
             </p>
             <p>
-                <label for="<?php echo esc_attr( $this->get_field_id( 'number_of_news' ) ); ?>"><?php _e( 'Number of news', 'text_domain' ); ?></label>
-                <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'number_of_news' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'number_of_news' ) ); ?>" type="number" value="<?php echo esc_attr( $number_of_news ); ?>" />
+                <label for="<?php echo esc_attr( $this->get_field_id('number_of_news')); ?>"><?php _e('Number of news', 'text_domain'); ?></label>
+                <input class="widefat" id="<?php echo esc_attr($this->get_field_id('number_of_news')); ?>" name="<?php echo esc_attr($this->get_field_name('number_of_news')); ?>" type="number" value="<?php echo esc_attr($number_of_news); ?>" />
+            </p>
+
+            <p>
+                <label for="<?php echo esc_attr($this->get_field_id('category')); ?>"><?php _e('Category', 'text_domain'); ?></label></br>
+
+                <?php
+                    printf (
+                            '<select multiple="multiple" name="%s[]" id="%s" class="widefat">',
+                            $this->get_field_name('category'),
+                            $this->get_field_id('category')
+                        );
+                    foreach ($categories as $category) :
+                        printf(
+                                '<option value="%s" %s> %s </option>',
+                                $category,
+                                in_array($category, $instance['category']) ? 'selected="selected"' : '',
+                                $category
+                            );
+                    endforeach;
+                    echo '</select>';
+                ?>
+            </p>
+
+            <p>
+                <label for="<?php echo esc_attr($this->get_field_id('country')); ?>"><?php _e('Country', 'text_domain'); ?></label></br>
+
+                <?php
+                    printf (
+                            '<select name="%s[]" id="%s" class="widefat">',
+                            $this->get_field_name('country'),
+                            $this->get_field_id('country')
+                        );
+                    $counter = -1;
+                    foreach ($countries as $country) :
+                        $counter++;
+                        printf(
+                                '<option value="%s" %s> ' . $names[$counter] . ' </option>',
+                                $country,
+                                in_array( $country, $instance['country']) ? 'selected="selected"' : '',
+                                $country
+                            );
+                    endforeach;
+                    echo '</select>';
+                ?>
             </p>
         <?php
     }
@@ -56,8 +193,11 @@ class Standout_News_Widget extends WP_Widget {
     public function update($new_instance, $old_instance)
     {
         $instance = $old_instance;
-        $instance['title']    = isset($new_instance['title']) ? wp_strip_all_tags($new_instance['title']) : '';
-        $instance['number_of_news']    = isset($new_instance['number_of_news']) ? wp_strip_all_tags($new_instance['number_of_news']) : '';
+        $instance['title'] = isset($new_instance['title']) ? wp_strip_all_tags($new_instance['title']) : '';
+        $instance['number_of_news'] = isset($new_instance['number_of_news']) ? wp_strip_all_tags($new_instance['number_of_news']) : '';
+        $instance['country'] = esc_sql($new_instance['country']);
+        $instance['category'] = esc_sql($new_instance['category']);
+
         return $instance;
     }
 
@@ -70,8 +210,7 @@ class Standout_News_Widget extends WP_Widget {
         extract($args);
 
         // Check the widget options
-        $title = isset( $instance['title'] ) ? apply_filters( 'widget_title', $instance['title'] ) : '';
-        $number_of_news = isset( $instance['number_of_news'] ) ? apply_filters( 'widget_number_of_news', $instance['number_of_news'] ) : '';
+        $title = isset($instance['title']) ? apply_filters('widget_title', $instance['title']) : '';
 
         // WordPress core before_widget hook (always include)
         echo $before_widget;
@@ -93,7 +232,7 @@ class Standout_News_Widget extends WP_Widget {
 
 // Register the widget
 function standout_register_news_widget() {
-    register_widget( 'Standout_News_Widget' );
+    register_widget('Standout_News_Widget');
 }
-add_action( 'widgets_init', 'standout_register_news_widget' );
+add_action('widgets_init', 'standout_register_news_widget');
 

@@ -17,6 +17,38 @@ class StandoutNews {
     }
 
     /**
+    * Get the news from a selected category
+    * @return $instance[] with the number set
+    */
+    public function sort_by_category()
+    {
+        $myrows = $widget_instances = get_option('widget_' . 'standout_news_widget');
+        foreach ($widget_instances as $instance) :
+            $category = $instance['category'];
+            if ($category != '') :
+                $category_string = $category;
+                return $category_string;
+            endif;
+        endforeach;
+    }
+
+    /**
+    * Get the news from a selected country
+    * @return $instance[] with the number set
+    */
+    public function sort_by_country()
+    {
+        $myrows = $widget_instances = get_option('widget_' . 'standout_news_widget');
+        foreach ($widget_instances as $instance) :
+            $country = $instance['country'][0];
+            if ($country != '') :
+                $country_string = preg_replace('/\s+/', '', 'country=' . $country . '&');
+                return $country_string;
+            endif;
+        endforeach;
+    }
+
+    /**
     * Initialize the class & add WP hooks
     */
     public function init()
@@ -30,8 +62,14 @@ class StandoutNews {
     */
     private function standout_fetch_data()
     {
+        $category = '';
+        foreach ($this->sort_by_category() as $cat) :
+            $category .= 'category=' . $cat . '&';
+        endforeach;
+
+        $data = 'https://newsapi.org/v2/top-headlines?' . $this->sort_by_country() . strtolower($category) .'apiKey=7318db02d38d4027b31eb8a830a156d9';
         try {
-        $response = wp_remote_get('https://newsapi.org/v2/everything?q=bitcoin&apiKey=7318db02d38d4027b31eb8a830a156d9');
+        $response = wp_remote_get($data);
         $news = json_decode($response['body']);
 
         } catch (Exception $ex) {
@@ -87,7 +125,7 @@ class StandoutNews {
         $json_response = $this->standout_fetch_data();
         $output[] = '';
         if ($json_response == null) :
-            $output = "<h1>Sorry, I couldn't find the api</h1>";
+            $output = null;
         else :
             foreach ($json_response as $news) :
                 $this->standout_set_news_values($news);
@@ -106,9 +144,21 @@ class StandoutNews {
         return $output;
     }
 
+    /**
+    * Get the amount of news chosen in the widget admin area
+    * @return $instance[] with the number set
+    */
+    public function get_number_of_news()
+    {
+        $myrows = $widget_instances = get_option('widget_' . 'standout_news_widget');
+        foreach ($widget_instances as $instance) :
+            return $instance['number_of_news'];
+        endforeach;
+    }
+
     public function display_news()
     {
-        display_template('show-news.php');
+        display_template('show-news.php','get_number_of_news');
     }
 }
 
