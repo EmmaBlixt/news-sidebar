@@ -30,7 +30,6 @@ class Standout_News_Widget extends WP_Widget {
     {
 
         $names = array(
-                'Select a country',
                 'Great Britain',
                 'United Arab Emirates',
                 'Argentina',
@@ -84,7 +83,6 @@ class Standout_News_Widget extends WP_Widget {
                             ),
             'country' => $countries =
                             array(
-                                '',
                                 'gb',
                                 'ae',
                                 'ar',
@@ -165,7 +163,7 @@ class Standout_News_Widget extends WP_Widget {
 
                 <?php
                     printf (
-                            '<select name="%s[]" id="%s" class="widefat">',
+                            '<select multiple="multiple" name="%s[]" id="%s" class="widefat">',
                             $this->get_field_name('country'),
                             $this->get_field_id('country')
                         );

@@ -12,7 +12,7 @@ if ((new StandoutNews)->standout_news_content() != null) :
                 $html .= '<div class="news-image" style="background-image: url(' . $news['urlToImage'] . ');">';
             endif;
             $html .= '<div class="news-color-overlay">';
-            $html .= '<a href="' . $news['url'] . '">';
+            $html .= '<a href="' . $news['url'] . '" target="_blank">';
             $html .= '<h1>' . $news['title'] . '</h1>';
             $html .= '</a>';
             $html .= '<p>Published at ' . $news['publishedAt'] . ' by '  . $news['author'] . '</p>';

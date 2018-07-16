@@ -40,9 +40,9 @@ class StandoutNews {
     {
         $myrows = $widget_instances = get_option('widget_' . 'standout_news_widget');
         foreach ($widget_instances as $instance) :
-            $country = $instance['country'][0];
+            $country = $instance['country'];
             if ($country != '') :
-                $country_string = preg_replace('/\s+/', '', 'country=' . $country . '&');
+                $country_string = $country;
                 return $country_string;
             endif;
         endforeach;
@@ -67,10 +67,15 @@ class StandoutNews {
             $category .= 'category=' . $cat . '&';
         endforeach;
 
-        $data = 'https://newsapi.org/v2/top-headlines?' . $this->sort_by_country() . strtolower($category) .'apiKey=7318db02d38d4027b31eb8a830a156d9';
+        $country = '';
+        foreach ($this->sort_by_country() as $count) :
+            $country .= 'country=' . $count . '&';
+        endforeach;
+
+        $data = 'https://newsapi.org/v2/top-headlines?' . $country . strtolower($category) .'apiKey=7318db02d38d4027b31eb8a830a156d9';
         try {
-        $response = wp_remote_get($data);
-        $news = json_decode($response['body']);
+            $response = wp_remote_get($data);
+            $news = json_decode($response['body']);
 
         } catch (Exception $ex) {
             $news = null;
