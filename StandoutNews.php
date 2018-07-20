@@ -13,7 +13,16 @@ class StandoutNews {
 
     function __construct()
     {
+        register_activation_hook(__FILE__, array( $this, 'activate_standout_news'));
         return $this->init();
+    }
+
+    /**
+    * Initialize the class & add WP hooks
+    */
+    public function init()
+    {
+        add_shortcode('standout_display_news', array($this, 'display_news'));
     }
 
     /**
@@ -33,6 +42,46 @@ class StandoutNews {
     }
 
     /**
+    * Create databases when plugin is activated
+    */
+    public function activate_standout_news()
+    {
+        global $wpdb;
+        $number_table = $wpdb->prefix . 'standout_news_number';
+        $category_table = $wpdb->prefix . 'standout_news_categories';
+        $country_table = $wpdb->prefix . 'standout_news_countries';
+        $charset = $wpdb->get_charset_collate();
+        $sql = '';
+
+        if($wpdb->get_var("SHOW TABLES LIKE '$number_table'") != $number_table) :
+            $sql = "CREATE TABLE $number_table (
+                id mediumint(9) NOT NULL AUTO_INCREMENT,
+                number_of_news int NOT NULL,
+                PRIMARY KEY (id)
+                ) $charset;";
+        endif;
+
+        if($wpdb->get_var("SHOW TABLES LIKE '$category_table'") != $category_table) :
+            $sql = "CREATE TABLE $category_table (
+                id mediumint(9) NOT NULL AUTO_INCREMENT,
+                category varchar(100) NOT NULL,
+                PRIMARY KEY (id)
+                ) $charset;";
+        endif;
+
+        if($wpdb->get_var("SHOW TABLES LIKE '$country_table'") != $country_table) :
+            $sql = "CREATE TABLE $country_table (
+                id mediumint(9) NOT NULL AUTO_INCREMENT,
+                country varchar(55) NOT NULL,
+                PRIMARY KEY (id)
+                ) $charset;";
+        endif;
+
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta($sql);
+    }
+
+    /**
     * Get the news from a selected country
     * @return $instance[] with the number set
     */
@@ -46,14 +95,6 @@ class StandoutNews {
                 return $country_string;
             endif;
         endforeach;
-    }
-
-    /**
-    * Initialize the class & add WP hooks
-    */
-    public function init()
-    {
-        add_shortcode('standout_display_news', array($this, 'display_news'));
     }
 
     /**

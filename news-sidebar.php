@@ -119,7 +119,6 @@ class Standout_News_Widget extends WP_Widget {
                                 'no',
                                 'ru',
                                 'se',
-                                'sg',
                                 'us'
                             )
         );
