@@ -1,10 +1,10 @@
 <?php
-$number_of_news = (new StandoutNews)->get_number_of_news();
+$number_of_news = (new StandoutNewsWidget)->get_number_of_news();
 $counter = 0;
 
 $html = '<div class="news-container">';
-if ((new StandoutNews)->standout_news_content() != null) :
-    foreach ((new StandoutNews)->standout_news_content() as $news) :
+if ((new StandoutNewsWidget)->standout_news_content() != null) :
+    foreach ((new StandoutNewsWidget)->standout_news_content() as $news) :
         if (!empty($news)) :
             $counter++;
             $html .= '<div class="news-info">';

@@ -8,7 +8,7 @@ Author URI: https://standout.se
 */
 
 defined('ABSPATH') or die('No script kiddies please!');
-require_once('StandoutNews.php');
+require_once('StandoutNewsWidget.php');
 
 class Standout_News_Widget extends WP_Widget {
 
@@ -30,7 +30,6 @@ class Standout_News_Widget extends WP_Widget {
     {
 
         $names = array(
-                'Select a country',
                 'Great Britain',
                 'United Arab Emirates',
                 'Argentina',
@@ -84,7 +83,6 @@ class Standout_News_Widget extends WP_Widget {
                             ),
             'country' => $countries =
                             array(
-                                '',
                                 'gb',
                                 'ae',
                                 'ar',
@@ -121,7 +119,6 @@ class Standout_News_Widget extends WP_Widget {
                                 'no',
                                 'ru',
                                 'se',
-                                'sg',
                                 'us'
                             )
         );
@@ -165,7 +162,7 @@ class Standout_News_Widget extends WP_Widget {
 
                 <?php
                     printf (
-                            '<select name="%s[]" id="%s" class="widefat">',
+                            '<select multiple="multiple" name="%s[]" id="%s" class="widefat">',
                             $this->get_field_name('country'),
                             $this->get_field_id('country')
                         );
@@ -223,7 +220,7 @@ class Standout_News_Widget extends WP_Widget {
             echo $before_title . $title . $after_title;
         endif;
 
-        echo do_shortcode('[standout_display_news]');
+        echo do_shortcode('[standout_news_widget]');
 
         echo '</div>';
         echo $after_widget;
