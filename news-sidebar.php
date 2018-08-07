@@ -8,7 +8,7 @@ Author URI: https://standout.se
 */
 
 defined('ABSPATH') or die('No script kiddies please!');
-require_once('StandoutNews.php');
+require_once('StandoutNewsWidget.php');
 
 class Standout_News_Widget extends WP_Widget {
 
@@ -220,7 +220,7 @@ class Standout_News_Widget extends WP_Widget {
             echo $before_title . $title . $after_title;
         endif;
 
-        echo do_shortcode('[standout_display_news]');
+        echo do_shortcode('[standout_news_widget]');
 
         echo '</div>';
         echo $after_widget;
