@@ -35,7 +35,6 @@ class StandoutNews {
     private function get_chosen_categories()
     {
         $cats = $wpdb->get_var("SELECT * FROM $category_table");
-        die(var_dump($cats));
     }
 
 
