@@ -21,7 +21,7 @@ class StandoutNewsWidget {
     */
     public function init()
     {
-        add_shortcode('standout_news_widget', array($this, 'standout_display_news'));
+        add_shortcode('standout_news_widget', array($this, 'standout_display_widget_news'));
     }
 
     /**
@@ -110,7 +110,7 @@ class StandoutNewsWidget {
     * Set the news values
     * @param object[] $news
     */
-    private function standout_set_news_values($news)
+    private function standout_set_widget_news_values($news)
     {
         $this->source      =   $this->get_source($news);
         $this->title       =   $news->title;
@@ -133,7 +133,7 @@ class StandoutNewsWidget {
             $output = null;
         else :
             foreach ($json_response as $news) :
-                $this->standout_set_news_values($news);
+                $this->standout_set_widget_news_values($news);
                 $output[] = array(
                     'source'       =>  $this->get_source($news),
                     'title'        =>  $news->title,
@@ -161,7 +161,7 @@ class StandoutNewsWidget {
         endforeach;
     }
 
-    public function standout_display_news()
+    public function standout_display_widget_news()
     {
         display_template('show-news-widget.php');
     }
