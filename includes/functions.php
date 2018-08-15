@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') or die('No script kiddies please!');
 /**
 * Fetch all countries
 * @return array[] $countries that contain all countries
@@ -82,19 +83,6 @@ if (!function_exists('standout_get_unchosen_categories')) :
 endif;
 
 /**
-* Get the amount of news set in the admin options
-* @return $data containing the number of news displayed
-*/
-if (!function_exists('standout_get_news_number')) :
-    function standout_get_news_number() {
-        global $wpdb;
-        $number_table = $wpdb->prefix . 'standout_news_number';
-        $data = $wpdb->get_results("SELECT number_of_news FROM $number_table");
-        return $data[0]->number_of_news;
-    }
-endif;
-
-/**
 * Fetch all blocked categories
 * @return array[] $blocked_categories that contain all categories in the blacklist
 */
@@ -146,7 +134,7 @@ if (!function_exists('standout_get_chosen_countries')) :
     function standout_get_chosen_countries() {
         global $wpdb;
         $table = $wpdb->prefix . 'standout_news_countries';
-        $countries = $wpdb->get_results("SELECT country FROM $table");
+        $countries = $wpdb->get_results("SELECT * FROM $table");
 
         return $countries;
     }
@@ -163,7 +151,7 @@ if (!function_exists('standout_news_settings')) :
         $html .= '<h1>News settings</h1>';
         $html .= "<p>Hi, here you'll have some settings for your news feed! Exciting, isn't it?</p>";
         echo $html;
-        echo standout_number_of_news_form();
+        echo standout_news_form();
         $html2 = '</div>';
         $html2 .= '</div>';
         $html2 .= '</div>';

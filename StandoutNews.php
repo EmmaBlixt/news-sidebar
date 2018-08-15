@@ -1,4 +1,5 @@
 <?php
+
 defined('ABSPATH') or die('No script kiddies please!');
 require_once('includes/setup.php');
 
@@ -10,10 +11,6 @@ class StandoutNews {
     private $url;
     private $urlToImage;
     private $publishedAt;
-    global $wpdb;
-    private $number_table = $wpdb->prefix . 'standout_news_number';
-    private $category_table = $wpdb->prefix . 'standout_news_categories';
-    private $country_table = $wpdb->prefix . 'standout_news_countries';
 
     function __construct()
     {
@@ -26,15 +23,89 @@ class StandoutNews {
     */
     public function init()
     {
-        add_shortcode('standout_display_news', array($this, 'get_chosen_categories'));
+        add_shortcode('standout_display_news', array($this, 'standout_display_news'));
     }
 
     /**
-    * Get the news from a selected category
+    * Get the news from a selected country
+    * @return $country string with the selected countries
     */
-    private function get_chosen_categories()
+    private function sort_by_country()
     {
-        $cats = $wpdb->get_var("SELECT * FROM $category_table");
+        $country = '';
+        $countries = standout_get_chosen_countries();
+        foreach ($countries as $count) :
+            if ($count->country_slug != '') :
+                $country .= 'country=' . $count->country_slug . '&';
+            endif;
+        endforeach;
+
+        return $country;
+    }
+
+
+    /**
+    * Get selected categories
+    * @return $category string with the categories
+    */
+    public function sort_by_category()
+    {
+        $category = '';
+        $categories = standout_get_chosen_categories();
+        foreach ($categories as $cat) :
+            if ($cat->category != '') :
+                $category .= 'category=' . $cat->category . '&';
+            endif;
+        endforeach;
+
+        return $category;
+    }
+
+
+    /**
+    * Fetch data from the api
+    * @return object $news that contains all the news
+    */
+    private function standout_fetch_data()
+    {
+        $data = 'https://newsapi.org/v2/top-headlines?' . $this->sort_by_country() . $this->sort_by_category() . 'apiKey=7318db02d38d4027b31eb8a830a156d9';
+
+        try {
+            $response = wp_remote_get($data);
+            $news = json_decode($response['body']);
+
+        } catch (Exception $ex) {
+            $news = null;
+            return $news;
+        }
+        return $news->articles;
+    }
+
+    /**
+    * Get the amount of news set in the admin options
+    * @return $data containing the number of news displayed
+    */
+    public function get_number_of_news() {
+        global $wpdb;
+        $number_table = $wpdb->prefix . 'standout_news_number';
+        $data = $wpdb->get_results("SELECT number_of_news FROM $number_table");
+        return $data[0]->number_of_news;
+    }
+
+
+    /**
+    * Set the news values
+    * @param object[] $news
+    */
+    private function standout_set_news_values($news)
+    {
+        $this->source      =   $this->get_source($news);
+        $this->title       =   $news->title;
+        $this->author      =   $news->author;
+        $this->description =   $news->description;
+        $this->url         =   $news->url;
+        $this->urlToImage  =   $news->urlToImage;
+        $this->publishedAt =   $news->publishedAt;
     }
 
 
@@ -76,37 +147,58 @@ class StandoutNews {
     }
 
     /**
-    * Fetch data from the api
-    * @return object $news that contains all the news
+    * Fetch the news source from the api
+    * @param object[] $news
+    * @return array() $output containing the source info from $news
     */
-    private function standout_fetch_data()
+    private function get_source($news)
     {
-        $category = '';
-        foreach ($this->sort_by_category() as $cat) :
-            $category .= 'category=' . $cat . '&';
-        endforeach;
+        $output = array();
 
-        $country = '';
-        foreach ($this->sort_by_country() as $count) :
-            $country .= 'country=' . $count . '&';
-        endforeach;
+        if(!empty($news->source)) :
+            $source = get_object_vars($news->source);
+            $output = array(
+                'id'       =>  'Id: '  . $source["id"],
+                'source'   =>  $source["name"]
+                );
+            else :
+            $output = array('status' => 'Not available');
+        endif;
 
-        $data = 'https://newsapi.org/v2/top-headlines?' . $country . strtolower($category) .'apiKey=7318db02d38d4027b31eb8a830a156d9';
-        try {
-            $response = wp_remote_get($data);
-            $news = json_decode($response['body']);
+        return $output;
+    }
 
-        } catch (Exception $ex) {
-            $news = null;
-            return $news;
-        }
-        return $news->articles;
+    /**
+    * Get all the news content
+    * @return array() $output containing the news
+    */
+    public function standout_news_content()
+    {
+        $json_response = $this->standout_fetch_data();
+        $output[] = '';
+        if ($json_response == null) :
+            $output = null;
+        else :
+            foreach ($json_response as $news) :
+                $this->standout_set_news_values($news);
+                $output[] = array(
+                    'source'       =>  $this->get_source($news),
+                    'title'        =>  $news->title,
+                    'description'  =>  $news->description,
+                    'author'       =>  $news->author,
+                    'url'          =>  $news->url,
+                    'urlToImage'   =>  $news->urlToImage,
+                    'publishedAt'  =>  $news->publishedAt
+                );
+            endforeach;
+        endif;
+
+        return $output;
     }
 
 
     public function standout_display_news()
     {
-        $this->get_chosen_categories();
         display_template('show-news.php');
     }
 }

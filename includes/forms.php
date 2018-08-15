@@ -6,8 +6,8 @@ require_once('functions.php');
 * Create all filter form fields
 * @return string $form_output will create a form field when echoed
 */
-if (!function_exists('standout_number_of_news_form')) :
-  function standout_number_of_news_form() {
+if (!function_exists('standout_news_form')) :
+  function standout_news_form() {
 
     $form_output = '<h1>Add display filters</h1>';
     $form_output .= '<form method="post" action="">';
