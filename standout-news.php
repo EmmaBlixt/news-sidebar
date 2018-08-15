@@ -9,6 +9,7 @@ Author URI: https://standout.se
 
 defined('ABSPATH') or die('No script kiddies please!');
 require_once('StandoutNewsWidget.php');
+require_once('StandoutNews.php');
 
 class Standout_News_Widget extends WP_Widget {
 
@@ -29,45 +30,8 @@ class Standout_News_Widget extends WP_Widget {
     public function form($instance)
     {
 
-        $names = array(
-                'Great Britain',
-                'United Arab Emirates',
-                'Argentina',
-                'Austria',
-                'Australia',
-                'Belgium',
-                'Bulgaria',
-                'Brazil',
-                'Canada',
-                'Switzerland',
-                'China',
-                'Colombia',
-                'Cuba',
-                'Czech Republic',
-                'Germany',
-                'Egypt',
-                'France',
-                'Greece',
-                'Hong Kong',
-                'Hungary',
-                'Indonesia',
-                'Ireland',
-                'Israel',
-                'India',
-                'Italy',
-                'Japan',
-                'South Korea',
-                'Lithuania',
-                'Latvia',
-                'Morocco',
-                'Mexico',
-                'Malaysia',
-                'Nigeria',
-                'Norway',
-                'Russia',
-                'Sweden',
-                'United States'
-            );
+        $countries = standout_get_all_countries();
+        foreach ($countries as $key => $country) :
 
         $defaults = array(
             'title'          => '',
@@ -81,47 +45,10 @@ class Standout_News_Widget extends WP_Widget {
                                 'Sports',
                                 'Technology'
                             ),
-            'country' => $countries =
-                            array(
-                                'gb',
-                                'ae',
-                                'ar',
-                                'at',
-                                'au',
-                                'be',
-                                'bg',
-                                'br',
-                                'ca',
-                                'ch',
-                                'cn',
-                                'co',
-                                'cu',
-                                'cz',
-                                'de',
-                                'eg',
-                                'fr',
-                                'gr',
-                                'hk',
-                                'hu',
-                                'id',
-                                'ie',
-                                'il',
-                                'in',
-                                'it',
-                                'jp',
-                                'kr',
-                                'lt',
-                                'lv',
-                                'ma',
-                                'mx',
-                                'my',
-                                'ng',
-                                'no',
-                                'ru',
-                                'se',
-                                'us'
-                            )
+            'country' => $country =
+                        array($country)
         );
+    endforeach;
 
         // Parse current settings with defaults
         extract(wp_parse_args((array) $instance, $defaults)); ?>
@@ -167,13 +94,9 @@ class Standout_News_Widget extends WP_Widget {
                             $this->get_field_id('country')
                         );
                     $counter = -1;
-                    foreach ($countries as $country) :
-                        $counter++;
+                    foreach ($countries as $key => $country) :
                         printf(
-                                '<option value="%s" %s> ' . $names[$counter] . ' </option>',
-                                $country,
-                                in_array( $country, $instance['country']) ? 'selected="selected"' : '',
-                                $country
+                                '<option value='.$key.' %s> ' . $country . ' </option>'
                             );
                     endforeach;
                     echo '</select>';
