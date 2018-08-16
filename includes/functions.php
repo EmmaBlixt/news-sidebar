@@ -84,13 +84,13 @@ if (!function_exists('standout_get_unchosen_categories')) :
         foreach ($categories as $key => $category) :
             $found = false;
             foreach ($chosen as $chosen_category) :
-                if ($category == $chosen_category->category) :
-                    $found = true;
+                if ($category != $chosen_category->category) :
+                     $output[] .= $category;
+                     break;
                 endif;
             endforeach;
-            if (!$found)
-                $output[] .= $category;
         endforeach;
+
         return $output;
     }
 endif;
@@ -121,13 +121,13 @@ if (!function_exists('standout_get_unchosen_categories')) :
         foreach ($categories as $key => $category) :
             $found = false;
             foreach ($chosen as $chosen_category) :
-                if ($key == $chosen_category->category) :
-                    $found = true;
+                if ($key != $chosen_category->category) :
+                    $output[] .= $key;
+                    break;
                 endif;
             endforeach;
-            if (!$found)
-                $output[] .= $key;
         endforeach;
+
         return $output;
     }
 endif;
