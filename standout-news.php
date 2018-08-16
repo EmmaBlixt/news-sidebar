@@ -93,7 +93,7 @@ class Standout_News_Widget extends WP_Widget {
                         );
                     foreach ($countries as $key => $country) :
                         printf(
-                                '<option value='.$key.' %s> ' . $country . ' </option>', $country
+                                '<option value='.$key.'>' . $country . ' </option>', $country
                             );
                     endforeach;
                     echo '</select>';
