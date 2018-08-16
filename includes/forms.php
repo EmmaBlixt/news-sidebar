@@ -9,53 +9,51 @@ require_once('functions.php');
 if (!function_exists('standout_news_form')) :
   function standout_news_form() {
 
-    $form_output = '<h1>Add display filters</h1>';
+    $form_output = '<h1>' . __('Add display filters', 'standout-news') . '</h1>';
     $form_output .= '<form method="post" action="">';
     $form_output .= '<label for="number">Number of news</label></br>';
-    $form_output .= '<input type="number" name="number" placeholder="'. standout_get_news_number() .'"></input></br>';
-    $form_output .= '<label for="categories">Show certain categories</label></br>';
+    $form_output .= '<input type="number" name="number" placeholder="' . (new StandoutNews)->get_number_of_news() .'"></input></br>';
+    $form_output .= '<label for="categories">' . __('Show certain categories', 'standout-news') . '</label></br>';
     $form_output .= '<select multiple="multiple" name="categories[]" style="width: 200px; height: 100px;">';
 
-    foreach (standout_get_unchosen_categories() as $blocked_category) :
-        $form_output .= '<option value="' . $blocked_category . '""> ' . ucfirst($blocked_category) . '</option>';
+    foreach (standout_get_unchosen_category_form_options() as $category) :
+        $form_output .= $category;
     endforeach;
 
     $form_output .= '</select></br>';
     $form_output .= '</select></br>';
-    $form_output .= '<label for="countries">Show from certain countries</label></br>';
+    $form_output .= '<label for="countries">' . __('Show from certain countries', 'standout-news') . '</label></br>';
     $form_output .= '<select multiple="multiple" name="countries[]" style="width: 200px; height: 300px;">';
 
-    foreach (standout_get_all_countries() as $key => $country) :
-        $found = false;
-        foreach (standout_get_chosen_countries() as $chosen_country) :
-            if ($country == $chosen_country->country) :
-                $found = true;
-            endif;
-        endforeach;
-        if (!$found)
-            $form_output .= '<option value="{short: '. $key .', long:'. $country .'}">' . $country . '</option>';
+    foreach (standout_get_unchosen_country_form_options() as $country) :
+        $form_output .= $country;
     endforeach;
 
     $form_output .= '</select></br>';
     $form_output .= '<input type="submit" name="standout_news_settings"/>';
     $form_output .= '</form>';
     $form_output .= '</br>';
-    $form_output .= '<h1>Remove display filters</h1>';
+    $form_output .= '<h1>'. __('Remove display filters', 'standout-news') . '</h1>';
     $form_output .= '<form method="post" action="">';
-    $form_output .= '<label for="remove_category">Remove category from display</label></br>';
+    $form_output .= '<label for="remove_category">' . __('Remove category from display', 'standout-news') . '</label></br>';
     $form_output .= '<select multiple name="remove_category[]" style="width: 300px; min-height: 100px">';
+
     $blocked_categories = standout_get_chosen_categories();
 
     foreach ($blocked_categories as $blocked_category) :
-        $form_output .= '<option value="' . $blocked_category->category . '""> ' . ucfirst($blocked_category->category) . '</option>';
+        $form_output .= '<option value="' . $blocked_category->category . '""> ' . __(ucfirst($blocked_category->category), 'standout-news') . '</option>';
     endforeach;
 
     $form_output .= '</select></br>';
-    $form_output .= '<label for="remove_country">Remove countries from display</label></br>';
+    $form_output .= '<label for="remove_country">' . __('Remove countries from display', 'standout-news') . '</label></br>';
     $form_output .= '<select multiple name="remove_country[]" style="width: 300px; height: 150px">';
 
+    function t($string) {
+        return $string;
+    }
+
     foreach (standout_get_chosen_countries() as $chosen_country) :
-        $form_output .= '<option value="' . $chosen_country->country . '""> ' . ucfirst($chosen_country->country) . '</option>';
+        $form_output .= '<option value="' . $chosen_country->country . '""> ' . __(t($chosen_country->country), 'standout-news') . '</option>';
     endforeach;
 
     $form_output .= '</select></br>';

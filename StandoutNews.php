@@ -162,7 +162,7 @@ class StandoutNews {
                 'source'   =>  $source["name"]
                 );
             else :
-            $output = array('status' => 'Not available');
+            $output = array('status' => __('Not available', 'standout-news'));
         endif;
 
         return $output;

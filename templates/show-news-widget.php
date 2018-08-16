@@ -16,10 +16,10 @@ if ((new StandoutNewsWidget)->standout_news_content() != null) :
             $html .= '<a href="' . $news['url'] . '" target="_blank">';
             $html .= '<h1>' . $news['title'] . '</h1>';
             $html .= '</a>';
-            $html .= '<p>Published at ' . $news['publishedAt'] . ' by '  . $news['author'] . '</p>';
+            $html .= '<p>' . __('Published at', 'standout-news') . $news['publishedAt'] . ' by '  . $news['author'] . '</p>';
             $html .= '<div class="news-content">';
             $html .= '<p>' . $news['description'] . '</p>';
-            $html .= '<p>Source: ' . $news['source']['source'];
+            $html .= '<p>' . __('Source: ', 'standout-news') . $news['source']['source'];
             $html .= '</div>';
             $html .= '</div>';
             if (!empty($news['urlToImage'])) :
@@ -32,7 +32,7 @@ if ((new StandoutNewsWidget)->standout_news_content() != null) :
         endif;
     endforeach;
 else:
-    $html .= "<h1>Sorry, we didn't find any news.<h1>";
+    $html .= '<h1>' . __ ("Sorry, we didn't find any news.", 'standout-news') . '<h1>';
 endif;
 $html .= '</div>';
 
