@@ -1,10 +1,11 @@
 <?php
 /*
 Plugin Name: News sidebar
-Plugin URI:
-description: Show recent news in a sidebar
+Description: Show recent news in a sidebar
 Author: Emma Blixt
 Author URI: https://standout.se
+Text Domain: standout-news
+Domain Path: /languages
 */
 
 defined('ABSPATH') or die('No script kiddies please!');
@@ -16,7 +17,7 @@ class Standout_News_Widget extends WP_Widget {
     public function __construct() {
             parent::__construct(
             'standout_news_widget',
-            __( 'Standout News Widget', 'text_domain' ),
+            __('Standout News Widget', 'standout-news'),
             array(
                 'customize_selective_refresh' => true,
             )
@@ -38,12 +39,12 @@ class Standout_News_Widget extends WP_Widget {
             'number_of_news' => '',
             'category' => $categories =
                             array(
-                                'Entertainment',
-                                'General',
-                                'Health',
-                                'Science',
-                                'Sports',
-                                'Technology'
+                                __('Entertainment', 'standout-news'),
+                                __('General', 'standout-news'),
+                                __('Health', 'standout-news'),
+                                __('Science', 'standout-news'),
+                                __('Sports', 'standout-news'),
+                                __('Technology', 'standout-news')
                             ),
             'country' => $country =
                         array($country)
@@ -55,16 +56,16 @@ class Standout_News_Widget extends WP_Widget {
 
         <?php // Widget Title ?>
             <p>
-                <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Widget Title', 'text_domain'); ?></label>
+                <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Widget Title', 'standout-news'); ?></label>
                 <input class="widefat" id="<?php echo esc_attr( $this->get_field_id('title')); ?>" name="<?php echo esc_attr($this->get_field_name('title')); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
             </p>
             <p>
-                <label for="<?php echo esc_attr( $this->get_field_id('number_of_news')); ?>"><?php _e('Number of news', 'text_domain'); ?></label>
+                <label for="<?php echo esc_attr( $this->get_field_id('number_of_news')); ?>"><?php _e('Number of news', 'standout-news'); ?></label>
                 <input class="widefat" id="<?php echo esc_attr($this->get_field_id('number_of_news')); ?>" name="<?php echo esc_attr($this->get_field_name('number_of_news')); ?>" type="number" value="<?php echo esc_attr($number_of_news); ?>" />
             </p>
 
             <p>
-                <label for="<?php echo esc_attr($this->get_field_id('category')); ?>"><?php _e('Category', 'text_domain'); ?></label></br>
+                <label for="<?php echo esc_attr($this->get_field_id('category')); ?>"><?php _e('Category', 'standout-news'); ?></label></br>
 
                 <?php
                     printf (
@@ -85,7 +86,7 @@ class Standout_News_Widget extends WP_Widget {
             </p>
 
             <p>
-                <label for="<?php echo esc_attr($this->get_field_id('country')); ?>"><?php _e('Country', 'text_domain'); ?></label></br>
+                <label for="<?php echo esc_attr($this->get_field_id('country')); ?>"><?php _e('Country', 'standout-news'); ?></label></br>
 
                 <?php
                     printf (
@@ -156,3 +157,8 @@ function standout_register_news_widget() {
 }
 add_action('widgets_init', 'standout_register_news_widget');
 
+
+function standout_news_textdomain() {
+    load_plugin_textdomain('standout-news', FALSE, basename( dirname( __FILE__ )) . '/includes/languages/');
+}
+add_action('plugins_loaded', 'standout_news_textdomain');

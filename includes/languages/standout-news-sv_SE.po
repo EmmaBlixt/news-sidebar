@@ -1,0 +1,263 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: standout-news\n"
+"POT-Creation-Date: 2018-08-15 13:08+0200\n"
+"PO-Revision-Date: 2018-08-15 17:19+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: sv_SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.1.1\n"
+"X-Poedit-Basepath: ../..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e;esc_attr\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: StandoutNews.php:165
+msgid "Not available"
+msgstr "Inte tillgängligt"
+
+#: includes/forms.php:12
+msgid "Add display filters"
+msgstr "Lägg till visningsfilter"
+
+#: includes/forms.php:16
+msgid "Show certain categories"
+msgstr "Visa från särskilda kategorier"
+
+#: includes/forms.php:25
+msgid "Show from certain countries"
+msgstr "Visa från särskilda länder"
+
+#: includes/forms.php:43
+msgid "Remove display filters"
+msgstr "Ta bort visningsfilter"
+
+#: includes/forms.php:45
+msgid "Remove category from display"
+msgstr "Ta bort kategori från visningen"
+
+#: includes/forms.php:54
+msgid "Remove countries from display"
+msgstr "Ta bort länder från visningen"
+
+#: includes/functions.php:11
+msgid "Great Britain"
+msgstr "Storbritannien"
+
+#: includes/functions.php:12
+msgid "United Arab Emirates"
+msgstr "Förenade arabemiraten"
+
+#: includes/functions.php:13
+msgid "Argentina"
+msgstr "Argentina"
+
+#: includes/functions.php:14
+msgid "Austria"
+msgstr "Österrike"
+
+#: includes/functions.php:15
+msgid "Australia"
+msgstr "Australien"
+
+#: includes/functions.php:16
+msgid "Belgium"
+msgstr "Belgien"
+
+#: includes/functions.php:17
+msgid "Bulgaria"
+msgstr "Bulgarien"
+
+#: includes/functions.php:18
+msgid "Brazil"
+msgstr "Brasilien"
+
+#: includes/functions.php:19
+msgid "Canada"
+msgstr "Kanada"
+
+#: includes/functions.php:20
+msgid "Switzerland"
+msgstr "Schweiz"
+
+#: includes/functions.php:21
+msgid "China"
+msgstr "Kina"
+
+#: includes/functions.php:22
+msgid "Columbia"
+msgstr "Columbia"
+
+#: includes/functions.php:23
+msgid "Cuba"
+msgstr "Cuba"
+
+#: includes/functions.php:24
+msgid "Czech Republic"
+msgstr "Tjeckien"
+
+#: includes/functions.php:25
+msgid "Germany"
+msgstr "Tyskland"
+
+#: includes/functions.php:26
+msgid "Egypt"
+msgstr "Egypten"
+
+#: includes/functions.php:27
+msgid "France"
+msgstr "Frankrike"
+
+#: includes/functions.php:28
+msgid "Greece"
+msgstr "Grekland"
+
+#: includes/functions.php:29
+msgid "Hong Kong"
+msgstr "Hong Kong"
+
+#: includes/functions.php:30
+msgid "Hungary"
+msgstr "Ungern"
+
+#: includes/functions.php:31
+msgid "Indonesia"
+msgstr "Indonesien"
+
+#: includes/functions.php:32
+msgid "Ireland"
+msgstr "Irland"
+
+#: includes/functions.php:33
+msgid "Israel"
+msgstr "Israel"
+
+#: includes/functions.php:34
+msgid "India"
+msgstr "Indien"
+
+#: includes/functions.php:35
+msgid "Italy"
+msgstr "Italien"
+
+#: includes/functions.php:36
+msgid "Japan"
+msgstr "Japan"
+
+#: includes/functions.php:37
+msgid "South Korea"
+msgstr "Sydkorea"
+
+#: includes/functions.php:38
+msgid "Lithuania"
+msgstr "Litauen"
+
+#: includes/functions.php:39
+msgid "Latvia"
+msgstr "Lettland"
+
+#: includes/functions.php:40
+msgid "Morocco"
+msgstr "Marocco"
+
+#: includes/functions.php:41
+msgid "Mexico"
+msgstr "Mexico"
+
+#: includes/functions.php:42
+msgid "Malaysia"
+msgstr "Malaysia"
+
+#: includes/functions.php:43
+msgid "Nigeria"
+msgstr "Nigerien"
+
+#: includes/functions.php:44
+msgid "Norway"
+msgstr "Norge"
+
+#: includes/functions.php:45
+msgid "Russia"
+msgstr "Ryssland"
+
+#: includes/functions.php:46
+msgid "Sweden"
+msgstr "Sverige"
+
+#: includes/functions.php:47
+msgid "United States"
+msgstr "Förenta Staterna"
+
+#: includes/functions.php:62 standout-news.php:42
+msgid "Entertainment"
+msgstr "Underhållning"
+
+#: includes/functions.php:63 standout-news.php:44
+msgid "Health"
+msgstr "Hälsa"
+
+#: includes/functions.php:64 standout-news.php:45
+msgid "Science"
+msgstr "Vetenskap"
+
+#: includes/functions.php:65 standout-news.php:46
+msgid "Sports"
+msgstr "Sport"
+
+#: includes/functions.php:66 standout-news.php:47
+msgid "Technology"
+msgstr "Teknologi"
+
+#: includes/functions.php:152
+msgid ""
+"Hi, here you'll have some settings for your news feed! Exciting, isn't it?"
+msgstr ""
+"Hej, här kommer du har några inställningar för ditt nyhetsflöde! Spännande, "
+"eller hur?"
+
+#: includes/functions.php:163
+msgid "Standout News Settings"
+msgstr "Standout Nyhetsinställningar"
+
+#: includes/functions.php:163
+msgid "Standout News"
+msgstr "Standout Nyheter"
+
+#: standout-news.php:20
+msgid "Standout News Widget"
+msgstr "Standout Nyhets Widget"
+
+#: standout-news.php:43
+msgid "General"
+msgstr "Allmänt"
+
+#: standout-news.php:59
+msgid "Widget Title"
+msgstr "Widget titel"
+
+#: standout-news.php:63
+msgid "Number of news"
+msgstr "Antal nyheter"
+
+#: standout-news.php:68
+msgid "Category"
+msgstr "Kategori"
+
+#: standout-news.php:89
+msgid "Country"
+msgstr "Land"
+
+#: templates/show-news-widget.php:18
+msgid "Published at"
+msgstr "Publicerad"
+
+#: templates/show-news-widget.php:21
+msgid "Source: "
+msgstr "Källa: "
+
+#: templates/show-news-widget.php:34
+msgid "Sorry, we didn't find any news."
+msgstr "Tyvärr hittade vi inga nyheter."
