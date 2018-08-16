@@ -31,7 +31,7 @@ class Standout_News_Widget extends WP_Widget {
     {
 
         $countries = standout_get_all_countries();
-        foreach ($countries as $key => $country) :
+        foreach ($countries as $country) :
 
         $defaults = array(
             'title'          => '',
@@ -50,10 +50,8 @@ class Standout_News_Widget extends WP_Widget {
         );
     endforeach;
 
-        // Parse current settings with defaults
         extract(wp_parse_args((array) $instance, $defaults)); ?>
 
-        <?php // Widget Title ?>
             <p>
                 <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Widget Title', 'text_domain'); ?></label>
                 <input class="widefat" id="<?php echo esc_attr( $this->get_field_id('title')); ?>" name="<?php echo esc_attr($this->get_field_name('title')); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
@@ -93,10 +91,9 @@ class Standout_News_Widget extends WP_Widget {
                             $this->get_field_name('country'),
                             $this->get_field_id('country')
                         );
-                    $counter = -1;
                     foreach ($countries as $key => $country) :
                         printf(
-                                '<option value='.$key.' %s> ' . $country . ' </option>'
+                                '<option value=%s>%s</option>', $key, $country
                             );
                     endforeach;
                     echo '</select>';
@@ -150,7 +147,6 @@ class Standout_News_Widget extends WP_Widget {
     }
 }
 
-// Register the widget
 function standout_register_news_widget() {
     register_widget('Standout_News_Widget');
 }

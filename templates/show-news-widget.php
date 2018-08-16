@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') or die('No script kiddies please!');
 $number_of_news = (new StandoutNewsWidget)->get_number_of_news();
 $counter = 0;
 
