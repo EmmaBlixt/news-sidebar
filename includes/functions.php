@@ -78,7 +78,7 @@ endif;
 if (!function_exists('standout_get_unchosen_categories')) :
     function standout_get_unchosen_categories() {
         $categories = standout_get_all_categories();
-        $chosen = standout_get_chosen_categories();
+        $chosen = get_option('standout_news_categories');
         $output = array();
 
         foreach ($categories as $key => $category) :
@@ -95,90 +95,54 @@ if (!function_exists('standout_get_unchosen_categories')) :
     }
 endif;
 
-/**
-* Fetch all blocked categories
-* @return array[] $blocked_categories that contain all categories in the blacklist
-*/
-if (!function_exists('standout_get_chosen_categories')) :
-    function standout_get_chosen_categories() {
-        global $wpdb;
-        $table = $wpdb->prefix . 'standout_news_categories';
-        $blocked_categories = $wpdb->get_results("SELECT * FROM $table");
-        return $blocked_categories;
-    }
-endif;
 
 /**
-* Fetch all unblocked categories
-* @return array[] $output that contain all categories that are not in the blacklist
+* Fetch all category options, marks those who are currently being displayed
+* @return string $form_output
 */
-if (!function_exists('standout_get_unchosen_categories')) :
-    function standout_get_unchosen_categories() {
-        $categories = standout_get_all_categories();
-        $chosen = standout_get_chosen_categories();
-        $output = array();
-
-        foreach ($categories as $key => $category) :
-            $found = false;
-            foreach ($chosen as $chosen_category) :
-                if ($key != $chosen_category->category) :
-                    $output[] .= $key;
-                    break;
-                endif;
-            endforeach;
-        endforeach;
-
-        return $output;
-    }
-endif;
-
 if (!function_exists('standout_get_category_form_options')) :
-    function standout_get_unchosen_category_form_options() {
+    function standout_get_category_form_options() {
 
-        $form_output = array();
+        $form_output = '';
         foreach (standout_get_all_categories() as $key => $category) :
             $found = false;
-            foreach (standout_get_chosen_categories() as $blocked_category) :
-                if ($key == $blocked_category->category) :
+            foreach (get_option('standout_news_categories') as $blocked_category) :
+                if ($key == $blocked_category) :
                     $found = true;
                 endif;
             endforeach;
-            if (!$found)
-                $form_output[] .= '<option value="' . $key . '""> ' . $category . '</option>';
+
+            if ($found) :
+                $form_output .= '<option selected="selected" value="' . $key . '""> ' . $category . '</option>';
+            else:
+                $form_output .= '<option value="' . $key . '""> ' . $category . '</option>';
+            endif;
         endforeach;
 
         return $form_output;
     }
 endif;
 
-
 /**
-* Fetch all blocked categories
-* @return array[] $countries that contain all categories in the blacklist
+* Fetch all country options, marks those who are currently being displayed
+* @return string $form_output
 */
-if (!function_exists('standout_get_chosen_countries')) :
-    function standout_get_chosen_countries() {
-        global $wpdb;
-        $table = $wpdb->prefix . 'standout_news_countries';
-        $countries = $wpdb->get_results("SELECT * FROM $table");
-
-        return $countries;
-    }
-endif;
-
-
 if (!function_exists('standout_get_country_form_options')) :
-    function standout_get_unchosen_country_form_options(){
-        $form_output = array();
+    function standout_get_country_form_options(){
+
+        $form_output = '';
         foreach (standout_get_all_countries() as $key => $country) :
             $found = false;
-            foreach (standout_get_chosen_countries() as $chosen_country) :
-                if ($country == $chosen_country->country) :
+            foreach (get_option('standout_news_countries') as $chosen_country) :
+                $country_split = explode(",", $chosen_country);
+                if ($key == $country_split[1]) :
                     $found = true;
                 endif;
             endforeach;
-            if(!$found) :
-                $form_output[] .= '<option value="{short: '. $key .', long:'. $country .'}">' . $country . '</option>';
+            if($found) :
+                $form_output .= '<option selected="selected" value="{short: '. $key .', long:'. $country .'}">' . $country . '</option>';
+            else:
+                $form_output .= '<option value="{short: '. $key .', long:'. $country .'}">' . $country . '</option>';
             endif;
         endforeach;
 

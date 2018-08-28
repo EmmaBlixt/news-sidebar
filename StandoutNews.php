@@ -14,7 +14,6 @@ class StandoutNews {
 
     function __construct()
     {
-        register_activation_hook(__FILE__, array( $this, 'activate_standout_news'));
         return $this->init();
     }
 
@@ -24,6 +23,9 @@ class StandoutNews {
     public function init()
     {
         add_shortcode('standout_display_news', array($this, 'standout_display_news'));
+        add_option('standout_news_number', 0, '', 'yes' );
+        add_option('standout_news_countries', '', '', 'yes' );
+        add_option('standout_news_categories', '', '', 'yes' );
     }
 
     /**
@@ -32,15 +34,13 @@ class StandoutNews {
     */
     private function sort_by_country()
     {
-        $country = '';
-        $countries = standout_get_chosen_countries();
-        foreach ($countries as $count) :
-            if ($count->country_slug != '') :
-                $country .= 'country=' . $count->country_slug . '&';
-            endif;
+        $output = '';
+        foreach (get_option('standout_news_countries') as $country) :
+            $country_split = explode(",", $country);
+            $output .= 'country=' . $country_split[1] . '&';
         endforeach;
 
-        return $country;
+        return $output;
     }
 
 
@@ -51,10 +51,10 @@ class StandoutNews {
     public function sort_by_category()
     {
         $category = '';
-        $categories = standout_get_chosen_categories();
+        $categories = get_option('standout_news_categories');
         foreach ($categories as $cat) :
-            if ($cat->category != '') :
-                $category .= 'category=' . $cat->category . '&';
+            if ($cat != '') :
+                $category .= 'category=' . $cat . '&';
             endif;
         endforeach;
 
@@ -83,13 +83,10 @@ class StandoutNews {
 
     /**
     * Get the amount of news set in the admin options
-    * @return $data containing the number of news displayed
+    * @return string with the set number
     */
     public function get_number_of_news() {
-        global $wpdb;
-        $number_table = $wpdb->prefix . 'standout_news_number';
-        $data = $wpdb->get_results("SELECT number_of_news FROM $number_table");
-        return $data[0]->number_of_news;
+        return get_option('standout_news_number');
     }
 
 
@@ -106,44 +103,6 @@ class StandoutNews {
         $this->url         =   $news->url;
         $this->urlToImage  =   $news->urlToImage;
         $this->publishedAt =   $news->publishedAt;
-    }
-
-
-    /**
-    * Create databases when plugin is activated
-    */
-    private function activate_standout_news()
-    {
-        $charset = $wpdb->get_charset_collate();
-        $sql = '';
-
-        if($wpdb->get_var("SHOW TABLES LIKE '$number_table'") != $number_table) :
-            $sql = "CREATE TABLE $number_table (
-                id mediumint(9) NOT NULL AUTO_INCREMENT,
-                number_of_news int NOT NULL,
-                PRIMARY KEY (id)
-                ) $charset;";
-        endif;
-
-        if($wpdb->get_var("SHOW TABLES LIKE '$category_table'") != $category_table) :
-            $sql = "CREATE TABLE $category_table (
-                id mediumint(9) NOT NULL AUTO_INCREMENT,
-                category varchar(100) NOT NULL,
-                PRIMARY KEY (id)
-                ) $charset;";
-        endif;
-
-        if($wpdb->get_var("SHOW TABLES LIKE '$country_table'") != $country_table) :
-            $sql = "CREATE TABLE $country_table (
-                id mediumint(9) NOT NULL AUTO_INCREMENT,
-                country_name varchar(55) NOT NULL,
-                country_slug varchar(10) NOT NULL,
-                PRIMARY KEY (id)
-                ) $charset;";
-        endif;
-
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-        dbDelta($sql);
     }
 
     /**
